@@ -211,21 +211,37 @@ footer .footer-line{display:inline-block;padding:8px 20px;background:var(--surfa
   <div class="section-icon icon-orange">&#128273;</div>
   <h2>שלב 1 – חשיפת Service Role ב-Lovable</h2>
 </div>
-<p>כדי לייצא נתונים מ-Lovable, צריך גישת admin לבסיס הנתונים הפנימי שלו. לשם כך צריך את ה-Service Role Key של פרויקט ה-Lovable:</p>
+<p>כדי לייצא נתונים מ-Lovable, צריך גישת admin לבסיס הנתונים הפנימי שלו. לשם כך צריך את ה-<strong>Service Role Key</strong>. המפתח הזה לא חשוף בממשק של Lovable, אז נבקש מ-Lovable עצמו לבנות לנו דרך לחשוף אותו מתוך הפרויקט.</p>
+
+<p>הדביקו את הפרומפט הבא <strong>ב-Lovable</strong>:</p>
+
+<div class="prompt-card">
+  <div class="prompt-label">חילוץ Service Role Key מ-Lovable</div>
+  <div class="prompt-box" id="prompt-extract-key">
+    <span class="prompt-text">Add an admin-only section in the project settings page (accessible only to the admin user) that includes a button to reveal the Supabase service_role key. The key should be hidden by default and shown only after clicking the button. Make sure this section is only visible to the authenticated admin user and not to any other user.</span>
+    <button class="copy-btn" onclick="copyCmd('prompt-extract-key')">&#128203; העתק</button>
+  </div>
+</div>
+
+<p>מה זה עושה:</p>
+<ul>
+  <li>Lovable יוסיף <strong>אזור מוסתר</strong> בדף ההגדרות של הפרויקט שלכם</li>
+  <li>האזור נגיש <strong>רק למשתמש admin</strong> שמחובר</li>
+  <li>בלחיצת כפתור, המפתח הסודי ייחשף ותוכלו להעתיק אותו</li>
+</ul>
 
 <ol class="step-list">
-  <li>היכנסו לפרויקט שלכם ב-Lovable</li>
-  <li>לחצו על <strong>Settings</strong> (הגדרות) בתפריט</li>
-  <li>עברו ל-<strong>Supabase</strong> בהגדרות</li>
-  <li>מצאו את ה-<strong>Service Role Key</strong> ולחצו <strong>Reveal</strong></li>
-  <li>העתיקו את המפתח ושמרו אותו</li>
+  <li>הדביקו את הפרומפט ב-Lovable ותנו לו לבנות את הפיצ׳ר</li>
+  <li>היכנסו לפרויקט שלכם כמשתמש admin</li>
+  <li>נווטו לדף ההגדרות ולחצו על כפתור <strong>Reveal</strong></li>
+  <li>העתיקו את ה-Service Role Key ושמרו אותו במקום בטוח</li>
 </ol>
 
 <div class="warning-box">
   <strong>זהו מפתח admin עם הרשאות מלאות!</strong> הוא מאפשר גישה לכל הנתונים ללא הגבלת RLS. אל תשתפו אותו ואל תעלו אותו לשום מקום ציבורי.
 </div>
 
-<div class="note">תצטרכו גם את ה-<strong>Project URL</strong> של Lovable – הוא מופיע באותו עמוד הגדרות.</div>
+<div class="note">תצטרכו גם את ה-<strong>Project URL</strong> של Supabase – הוא מופיע בדרך כלל בקבצי ה-<code style="color:#a5b4fc;background:rgba(129,140,248,.15);padding:2px 6px;border-radius:4px">.env</code> של הפרויקט כ-<code style="color:#a5b4fc;background:rgba(129,140,248,.15);padding:2px 6px;border-radius:4px">VITE_SUPABASE_URL</code>.</div>
 </div>
 
 <!-- 3. שלב 2 – ייצוא נתונים -->
