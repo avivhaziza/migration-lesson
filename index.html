@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מיגרציית נתונים</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#161822;--surface:#1c1f2e;--surface2:#242738;
+  --border:#2e3247;--border-light:#3a3f5a;
+  --text:#e2e4ed;--text-secondary:#9da2b9;--muted:#6b7094;
+  --accent:#818cf8;--accent2:#a78bfa;--accent3:#c084fc;
+  --green:#34d399;--green-surface:#0d2818;
+  --blue:#60a5fa;--blue-surface:#172554;
+  --orange:#fbbf24;--orange-surface:#422006;
+  --red:#f87171;--red-surface:#2a0a0a;
+  --pink:#f472b6;--teal:#2dd4bf;--cyan:#22d3ee;
+  --radius:14px;--radius-sm:10px;
+  --shadow:0 2px 12px rgba(0,0,0,.3);--shadow-lg:0 8px 30px rgba(0,0,0,.4);
+}
+body{font-family:"Segoe UI","SF Pro Display",-apple-system,BlinkMacSystemFont,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;min-height:100vh}
+.page-wrapper{max-width:820px;margin:0 auto;padding:0 20px 60px}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#3b0764 50%,#581c87 100%);padding:50px 0 60px;margin-bottom:40px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-40%;right:-15%;width:500px;height:500px;background:radial-gradient(circle,rgba(192,132,252,.15) 0%,transparent 70%);border-radius:50%}
+.hero::after{content:"";position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(129,140,248,.1) 0%,transparent 70%);border-radius:50%}
+.hero-content{max-width:820px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.hero h1{font-size:2.4rem;color:#fff;margin-bottom:8px;font-weight:800;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.hero .subtitle{color:rgba(255,255,255,.7);font-size:1.1rem;margin-bottom:24px;font-weight:400}
+.hero .goal-list{background:rgba(255,255,255,.07);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:20px 24px;color:#fff}
+.hero .goal-list .goal-title{font-weight:700;font-size:1.05rem;margin-bottom:10px}
+.hero .goal-list ul{list-style:none;padding:0;margin:0}
+.hero .goal-list li{padding:5px 0;padding-right:28px;position:relative;font-size:.97rem;color:rgba(255,255,255,.85)}
+.hero .goal-list li::before{content:"✓";position:absolute;right:0;top:5px;font-weight:700;font-size:1.1rem;color:#34d399}
+
+/* Sections */
+.section{background:var(--surface);border-radius:var(--radius);padding:32px 32px 28px;margin-bottom:24px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden}
+.section::before{content:"";position:absolute;top:0;right:0;width:100%;height:4px}
+.section-purple::before{background:linear-gradient(90deg,#818cf8,#a78bfa)}
+.section-blue::before{background:linear-gradient(90deg,#60a5fa,#93c5fd)}
+.section-green::before{background:linear-gradient(90deg,#34d399,#6ee7b7)}
+.section-orange::before{background:linear-gradient(90deg,#fbbf24,#fcd34d)}
+.section-pink::before{background:linear-gradient(90deg,#f472b6,#f9a8d4)}
+.section-teal::before{background:linear-gradient(90deg,#2dd4bf,#5eead4)}
+.section-red::before{background:linear-gradient(90deg,#f87171,#fca5a5)}
+.section-cyan::before{background:linear-gradient(90deg,#22d3ee,#67e8f9)}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.section-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.icon-purple{background:rgba(129,140,248,.15);color:#a5b4fc}
+.icon-blue{background:rgba(96,165,250,.15);color:#93c5fd}
+.icon-green{background:rgba(52,211,153,.15);color:#6ee7b7}
+.icon-orange{background:rgba(251,191,36,.15);color:#fcd34d}
+.icon-pink{background:rgba(244,114,182,.15);color:#f9a8d4}
+.icon-teal{background:rgba(45,212,191,.15);color:#5eead4}
+.icon-red{background:rgba(248,113,113,.15);color:#fca5a5}
+.icon-cyan{background:rgba(34,211,238,.15);color:#67e8f9}
+.section-header h2{font-size:1.35rem;color:var(--text);margin:0;border:none;padding:0}
+p{margin-bottom:12px;color:var(--text-secondary)}
+ul,ol{margin:8px 0 14px;padding-right:24px}
+li{margin-bottom:6px;color:var(--text-secondary)}
+li strong{color:var(--text)}
+strong{color:var(--text)}
+
+/* TOC */
+.toc{background:var(--surface);border-radius:var(--radius);padding:24px 28px;margin-bottom:24px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.toc-title{font-weight:700;font-size:1rem;margin-bottom:12px;color:var(--text)}
+.toc-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
+.toc-list li{font-size:.9rem}
+.toc-list a{color:var(--text-secondary);text-decoration:none;padding:4px 0;display:flex;align-items:center;gap:6px;transition:.15s}
+.toc-list a:hover{color:var(--accent)}
+.toc-list .toc-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:rgba(129,140,248,.12);color:var(--accent);font-size:.75rem;font-weight:700;flex-shrink:0}
+
+/* Analogy */
+.analogy-box{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);border-radius:var(--radius-sm);padding:18px 22px;margin:14px 0;display:flex;align-items:flex-start;gap:12px}
+.analogy-box .analogy-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.analogy-box .analogy-text{font-size:.95rem;color:var(--text-secondary);line-height:1.6}
+.analogy-box .analogy-text strong{color:#fcd34d}
+
+/* Command Box */
+.cmd-box{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:var(--radius-sm);padding:12px 16px;min-height:44px;margin:10px 0;font-family:"Cascadia Code",Consolas,"Courier New",monospace;font-size:.9rem;line-height:1.7;direction:ltr;text-align:left;background:var(--bg2);border:1px solid var(--border);color:#a5b4fc;word-break:break-word;overflow-wrap:anywhere}
+.cmd-box .cmd-text{flex:1;overflow-x:auto;white-space:nowrap;direction:ltr;text-align:left}
+.cmd-box .cmd-prefix{color:var(--muted);user-select:none}
+.cmd-box .copy-btn{flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:6px 14px;font-size:.78rem;cursor:pointer;color:#fff;transition:.2s;font-weight:600;box-shadow:0 2px 8px rgba(129,140,248,.25);white-space:nowrap}
+.cmd-box .copy-btn:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(129,140,248,.35)}
+.cmd-box.cmd-multi{flex-direction:row;flex-wrap:wrap;white-space:normal}
+.cmd-box.cmd-multi .cmd-text{white-space:normal;overflow-x:visible}
+
+/* Prompt Box */
+.prompt-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);transition:transform .15s}
+.prompt-card:hover{transform:translateY(-2px)}
+.prompt-card .prompt-label{font-weight:700;font-size:.85rem;color:var(--accent);letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.prompt-card .prompt-label::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.prompt-box{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:var(--radius-sm);padding:14px 16px;min-height:44px;margin:0;font-size:.92rem;line-height:1.7;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.18);direction:ltr;text-align:left;color:#c4b5fd;word-break:break-word;overflow-wrap:anywhere}
+.prompt-box .prompt-text{flex:1;direction:ltr;text-align:left}
+.prompt-box .copy-btn{flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:6px 14px;font-size:.78rem;cursor:pointer;color:#fff;transition:.2s;font-weight:600;box-shadow:0 2px 8px rgba(129,140,248,.25);white-space:nowrap}
+.prompt-box .copy-btn:hover{transform:scale(1.05)}
+
+/* Warning Box */
+.warning-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:var(--radius-sm);padding:14px 18px;font-size:.9rem;margin:10px 0;color:#fca5a5;display:flex;align-items:flex-start;gap:10px;word-break:break-word;overflow-wrap:anywhere;line-height:1.7}
+.warning-box::before{content:"⚠️";font-size:1rem;flex-shrink:0}
+
+/* Step List */
+.step-list{list-style:none;padding:0;margin:14px 0;counter-reset:step}
+.step-list li{counter-increment:step;display:flex;align-items:flex-start;gap:14px;padding:14px 18px;margin-bottom:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:.95rem;color:var(--text-secondary)}
+.step-list li::before{content:counter(step);flex-shrink:0;width:30px;height:30px;border-radius:8px;background:rgba(129,140,248,.12);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+
+/* Verify, Note, Info */
+.verify-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:var(--radius-sm);padding:14px 18px;margin:10px 0;display:flex;align-items:flex-start;gap:10px;font-size:.9rem;color:#6ee7b7;word-break:break-word;overflow-wrap:anywhere;line-height:1.7}
+.verify-box::before{content:"✓";font-weight:700;font-size:1rem;flex-shrink:0;margin-top:1px}
+.note{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:var(--radius-sm);padding:14px 18px;font-size:.9rem;margin:10px 0;color:#fcd34d;display:flex;align-items:flex-start;gap:10px;word-break:break-word;overflow-wrap:anywhere;line-height:1.7}
+.note::before{content:"💡";font-size:1rem;flex-shrink:0}
+.info-box{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:var(--radius-sm);padding:14px 18px;font-size:.9rem;margin:10px 0;color:#93c5fd;display:flex;align-items:flex-start;gap:10px;word-break:break-word;overflow-wrap:anywhere;line-height:1.7}
+.info-box::before{content:"ℹ️";font-size:1rem;flex-shrink:0}
+
+/* Trouble */
+.trouble-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start}
+.trouble-num{flex-shrink:0;width:32px;height:32px;border-radius:8px;background:rgba(251,191,36,.12);color:#fcd34d;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+.trouble-body{flex:1}
+.trouble-problem{font-weight:700;color:var(--text);margin-bottom:6px;font-size:.95rem}
+.trouble-fix{font-size:.9rem;color:var(--text-secondary);line-height:1.7;background:var(--bg2);border-radius:6px;padding:12px 16px;border-right:3px solid var(--green);word-break:break-word;overflow-wrap:anywhere}
+
+/* Checklist */
+.checklist{background:linear-gradient(135deg,#064e3b,#065f46);border:1px solid rgba(52,211,153,.2);border-radius:var(--radius);padding:28px 28px 24px}
+.checklist h2{color:#6ee7b7;margin:0 0 16px;font-size:1.3rem}
+.checklist ul{list-style:none;padding:0;margin:0}
+.checklist li{padding:10px 14px;margin-bottom:8px;background:rgba(255,255,255,.06);border-radius:8px;font-size:.95rem;color:#d1fae5;display:flex;align-items:center;gap:10px;border:1px solid rgba(52,211,153,.12)}
+.checklist li::before{content:"✅";font-size:.9rem;flex-shrink:0}
+
+/* Details */
+details{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin:14px 0;box-shadow:var(--shadow);overflow:hidden}
+details summary{padding:14px 20px;cursor:pointer;font-weight:600;color:var(--accent);list-style:none;display:flex;align-items:center;gap:10px;background:rgba(129,140,248,.05);transition:background .2s}
+details summary:hover{background:rgba(129,140,248,.1)}
+details summary::before{content:"◀";font-size:.7rem;transition:transform .2s;color:var(--accent2)}
+details[open] summary::before{transform:rotate(-90deg)}
+details[open] summary{border-bottom:1px solid var(--border)}
+details .details-body{padding:16px 20px}
+
+/* Progress */
+.progress-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:999;background:rgba(255,255,255,.05)}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#818cf8,#a78bfa,#c084fc);transition:width .1s linear}
+
+/* Footer */
+footer{text-align:center;padding:30px 20px;color:var(--muted);font-size:.85rem}
+footer .footer-line{display:inline-block;padding:8px 20px;background:var(--surface);border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
+
+@media(max-width:600px){
+  body{font-size:15px}.hero h1{font-size:1.7rem}.hero{padding:36px 0 44px}
+  .section{padding:24px 20px 22px}.toc-list{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- HERO -->
+<div class="hero">
+<div class="hero-content">
+  <h1>מיגרציית נתונים</h1>
+  <p class="subtitle">שיעור מתוך הקורס &middot; העברת נתונים מ-Lovable ל-Supabase</p>
+  <div class="goal-list">
+    <div class="goal-title">&#127919; מה נלמד היום</div>
+    <ul>
+      <li>למה צריך מיגרציה ומתי עושים את זה</li>
+      <li>חשיפת Service Role ב-Lovable</li>
+      <li>ייצוא כל הנתונים מהפרויקט</li>
+      <li>הכנסת הנתונים ל-Supabase החדש</li>
+      <li>בדיקה שהכל עבר בשלמות</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<div class="page-wrapper">
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">&#128218; תוכן עניינים</div>
+  <ul class="toc-list">
+    <li><a href="#s1"><span class="toc-num">1</span>למה עושים מיגרציה</a></li>
+    <li><a href="#s2"><span class="toc-num">2</span>חשיפת Service Role ב-Lovable</a></li>
+    <li><a href="#s3"><span class="toc-num">3</span>ייצוא נתונים</a></li>
+    <li><a href="#s4"><span class="toc-num">4</span>הכנסת הנתונים ל-Supabase</a></li>
+    <li><a href="#s5"><span class="toc-num">5</span>בדיקה</a></li>
+    <li><a href="#s6"><span class="toc-num">6</span>תקלות נפוצות</a></li>
+  </ul>
+</div>
+
+<!-- 1. למה עושים מיגרציה -->
+<div class="section section-purple" id="s1">
+<div class="section-header">
+  <div class="section-icon icon-purple">&#128640;</div>
+  <h2>למה עושים מיגרציה</h2>
+</div>
+<p>כשעובדים עם Lovable, הנתונים שלכם (טבלאות, קבצים, משתמשים) נשמרים ב-Supabase פנימי של Lovable. כשעוברים לעבוד עצמאית עם Supabase משלכם, צריך <strong>להעביר את כל הנתונים</strong> למקום החדש.</p>
+<p>זה כמו מעבר דירה – אתם לוקחים את כל הרהיטים (נתונים), המסמכים (קבצים), ורשימת הדיירים (משתמשים) ומעבירים לבית החדש.</p>
+
+<div class="analogy-box">
+  <span class="analogy-icon">&#128230;</span>
+  <div class="analogy-text">
+    <strong>מיגרציה = מעבר דירה דיגיטלי.</strong> אתם אורזים הכל מהמקום הישן (Lovable) ופורקים במקום החדש (Supabase שלכם). שום דבר לא נמחק – רק מועתק.
+  </div>
+</div>
+</div>
+
+<!-- 2. שלב 1 – חשיפת Service Role ב-Lovable -->
+<div class="section section-orange" id="s2">
+<div class="section-header">
+  <div class="section-icon icon-orange">&#128273;</div>
+  <h2>שלב 1 – חשיפת Service Role ב-Lovable</h2>
+</div>
+<p>כדי לייצא נתונים מ-Lovable, צריך גישת admin לבסיס הנתונים הפנימי שלו. לשם כך צריך את ה-Service Role Key של פרויקט ה-Lovable:</p>
+
+<ol class="step-list">
+  <li>היכנסו לפרויקט שלכם ב-Lovable</li>
+  <li>לחצו על <strong>Settings</strong> (הגדרות) בתפריט</li>
+  <li>עברו ל-<strong>Supabase</strong> בהגדרות</li>
+  <li>מצאו את ה-<strong>Service Role Key</strong> ולחצו <strong>Reveal</strong></li>
+  <li>העתיקו את המפתח ושמרו אותו</li>
+</ol>
+
+<div class="warning-box">
+  <strong>זהו מפתח admin עם הרשאות מלאות!</strong> הוא מאפשר גישה לכל הנתונים ללא הגבלת RLS. אל תשתפו אותו ואל תעלו אותו לשום מקום ציבורי.
+</div>
+
+<div class="note">תצטרכו גם את ה-<strong>Project URL</strong> של Lovable – הוא מופיע באותו עמוד הגדרות.</div>
+</div>
+
+<!-- 3. שלב 2 – ייצוא נתונים -->
+<div class="section section-blue" id="s3">
+<div class="section-header">
+  <div class="section-icon icon-blue">&#128228;</div>
+  <h2>שלב 2 – ייצוא נתונים</h2>
+</div>
+<p>עכשיו נבקש מ-Claude לייצא את כל הנתונים מפרויקט ה-Lovable. שלחו את הפרומפט הבא:</p>
+
+<div class="prompt-card">
+  <div class="prompt-label">ייצוא מלא</div>
+  <div class="prompt-box" id="prompt-export">
+    <span class="prompt-text">Export all project data from the Lovable Supabase including all tables, storage buckets, and auth users. Save everything to local files so we can import it later.</span>
+    <button class="copy-btn" onclick="copyCmd('prompt-export')">&#128203; העתק</button>
+  </div>
+</div>
+
+<p>Claude ייצא:</p>
+<ul>
+  <li><strong>טבלאות</strong> – כל השורות מכל הטבלאות, כולל סכמה (מבנה)</li>
+  <li><strong>Storage</strong> – כל הקבצים שהועלו (תמונות, מסמכים, וכו׳)</li>
+  <li><strong>Auth users</strong> – רשימת המשתמשים הרשומים</li>
+</ul>
+
+<div class="info-box">Claude ישמור את הנתונים בקבצים מקומיים בתיקיית הפרויקט. תוכלו לראות אותם ב-Explorer.</div>
+
+<div class="verify-box">אחרי הייצוא, Claude יציג סיכום של כל מה שיוצא – כמה טבלאות, כמה שורות, כמה קבצים.</div>
+</div>
+
+<!-- 4. שלב 3 – הכנסת הנתונים ל-Supabase -->
+<div class="section section-green" id="s4">
+<div class="section-header">
+  <div class="section-icon icon-green">&#128229;</div>
+  <h2>שלב 3 – הכנסת הנתונים ל-Supabase</h2>
+</div>
+<p>עכשיו נכניס את כל הנתונים לפרויקט Supabase החדש שלכם. ודאו שהחיבור ל-MCP הוגדר (ראו שיעור קודם), ושלחו:</p>
+
+<div class="prompt-card">
+  <div class="prompt-label">ייבוא מלא</div>
+  <div class="prompt-box" id="prompt-import">
+    <span class="prompt-text">Import all exported data into Supabase using the service role connection. Recreate the schema first, then import all table data, storage files, and auth users.</span>
+    <button class="copy-btn" onclick="copyCmd('prompt-import')">&#128203; העתק</button>
+  </div>
+</div>
+
+<p>Claude יבצע את הפעולות הבאות באופן אוטומטי:</p>
+
+<ol class="step-list">
+  <li><strong>יצירת סכמה</strong> – יבנה את כל הטבלאות עם אותו מבנה בדיוק</li>
+  <li><strong>העתקת נתונים</strong> – יכניס את כל השורות לטבלאות החדשות</li>
+  <li><strong>העלאת קבצים</strong> – יעלה את כל הקבצים ל-Storage buckets</li>
+  <li><strong>ייבוא משתמשים</strong> – יעביר את רשימת המשתמשים ל-Auth</li>
+</ol>
+
+<div class="note">התהליך עשוי לקחת כמה דקות, תלוי בכמות הנתונים. אל תסגרו את החלון בזמן שזה רץ.</div>
+</div>
+
+<!-- 5. בדיקה -->
+<div class="section section-cyan" id="s5">
+<div class="section-header">
+  <div class="section-icon icon-cyan">&#128270;</div>
+  <h2>בדיקה</h2>
+</div>
+<p>אחרי הייבוא, חשוב לוודא שהכל עבר כמו שצריך. בדקו שלושה דברים:</p>
+
+<div class="prompt-card">
+  <div class="prompt-label">בדיקת טבלאות</div>
+  <div class="prompt-box" id="prompt-check-tables">
+    <span class="prompt-text">List all tables and count the rows in each one. Compare with the export summary to make sure nothing is missing.</span>
+    <button class="copy-btn" onclick="copyCmd('prompt-check-tables')">&#128203; העתק</button>
+  </div>
+</div>
+
+<div class="verify-box"><strong>Tables populated</strong> – כל הטבלאות קיימות ומכילות את אותו מספר שורות כמו במקור.</div>
+
+<div class="prompt-card">
+  <div class="prompt-label">בדיקת קבצים</div>
+  <div class="prompt-box" id="prompt-check-storage">
+    <span class="prompt-text">List all storage buckets and count the files in each one.</span>
+    <button class="copy-btn" onclick="copyCmd('prompt-check-storage')">&#128203; העתק</button>
+  </div>
+</div>
+
+<div class="verify-box"><strong>Files exist</strong> – כל ה-buckets קיימים וכל הקבצים הועלו בהצלחה.</div>
+
+<div class="prompt-card">
+  <div class="prompt-label">בדיקת משתמשים</div>
+  <div class="prompt-box" id="prompt-check-users">
+    <span class="prompt-text">List all auth users and verify the count matches the original export.</span>
+    <button class="copy-btn" onclick="copyCmd('prompt-check-users')">&#128203; העתק</button>
+  </div>
+</div>
+
+<div class="verify-box"><strong>Users exist</strong> – כל המשתמשים קיימים ב-Auth של Supabase החדש.</div>
+</div>
+
+<!-- 6. תקלות נפוצות -->
+<div class="section section-red" id="s6">
+<div class="section-header">
+  <div class="section-icon icon-red">&#128295;</div>
+  <h2>תקלות נפוצות</h2>
+</div>
+
+<div class="trouble-item">
+  <div class="trouble-num">1</div>
+  <div class="trouble-body">
+    <div class="trouble-problem">Missing tables – חסרות טבלאות אחרי הייבוא</div>
+    <div class="trouble-fix">ייתכן שהסכמה לא נוצרה לפני הכנסת הנתונים. בקשו מ-Claude: <code style="color:#a5b4fc;background:rgba(129,140,248,.15);padding:2px 6px;border-radius:4px">Recreate the missing tables from the exported schema and then import their data</code></div>
+  </div>
+</div>
+
+<div class="trouble-item">
+  <div class="trouble-num">2</div>
+  <div class="trouble-body">
+    <div class="trouble-problem">Auth errors – שגיאות בייבוא משתמשים</div>
+    <div class="trouble-fix">ייבוא משתמשים דורש הרשאות service_role. ודאו שה-MCP מחובר עם המפתח הנכון (service_role ולא anon). אם המשתמשים כבר קיימים, Claude ידלג עליהם – זה תקין.</div>
+  </div>
+</div>
+
+<div class="trouble-item">
+  <div class="trouble-num">3</div>
+  <div class="trouble-body">
+    <div class="trouble-problem">Storage empty – ה-Storage ריק אחרי הייבוא</div>
+    <div class="trouble-fix">ייתכן שה-buckets לא נוצרו לפני העלאת הקבצים. בקשו מ-Claude: <code style="color:#a5b4fc;background:rgba(129,140,248,.15);padding:2px 6px;border-radius:4px">Create the storage buckets first, then re-upload all files from the export</code></div>
+  </div>
+</div>
+</div>
+
+<!-- Final Checklist -->
+<div class="checklist">
+  <h2>&#127942; סיכום – המיגרציה הושלמה</h2>
+  <ul>
+    <li>חשפנו את ה-Service Role Key מ-Lovable</li>
+    <li>ייצאנו את כל הנתונים (טבלאות, קבצים, משתמשים)</li>
+    <li>ייבאנו הכל ל-Supabase החדש</li>
+    <li>בדקנו שהטבלאות מלאות</li>
+    <li>בדקנו שהקבצים קיימים ב-Storage</li>
+    <li>בדקנו שהמשתמשים קיימים ב-Auth</li>
+    <li>הנתונים הועברו בשלמות &#128640;</li>
+  </ul>
+</div>
+
+</div><!-- /page-wrapper -->
+
+<footer>
+  <div class="footer-line">&#128218; מיגרציית נתונים &middot; שיעור מתוך הקורס</div>
+</footer>
+
+<script>
+function copyCmd(id){
+  var el=document.getElementById(id);
+  var textEl=el.querySelector('.cmd-text')||el.querySelector('.prompt-text');
+  var text=textEl?textEl.innerText.replace(/^\$\s*/gm,'').trim():el.innerText.replace(/^\$\s*/gm,'').replace(/העתק/g,'').trim();
+  navigator.clipboard.writeText(text).then(function(){
+    var btn=el.querySelector('.copy-btn');
+    btn.textContent='✓ הועתק';
+    setTimeout(function(){btn.innerHTML='&#128203; העתק'},1500);
+  });
+}
+window.addEventListener('scroll',function(){
+  var h=document.documentElement;
+  var pct=(h.scrollTop||document.body.scrollTop)/((h.scrollHeight||document.body.scrollHeight)-h.clientHeight)*100;
+  document.getElementById('progressFill').style.width=Math.min(pct,100)+'%';
+});
+</script>
+
+</body>
+</html>
